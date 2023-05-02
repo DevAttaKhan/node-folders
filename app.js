@@ -3,7 +3,11 @@ const cors = require("cors");
 const { Sequelize, DataTypes } = require("sequelize");
 const app = express();
 
-app.use(cors());
+const corsOptions = {
+  methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
+};
+
+app.use(cors(corsOptions));
 app.use(express.json());
 
 // Option 3: Passing parameters separately (other dialects)
@@ -156,6 +160,25 @@ app.get("/books", async (req, res) => {
     res.json(results);
   } catch (error) {
     res.json(error);
+  }
+});
+
+app.post("/books/move", async (req, res) => {
+  try {
+    const { bookId, folderId } = req.body;
+
+    const sql = ` 
+        update books
+        set folder_id = ${folderId}
+        where book_id = ${bookId}
+        `;
+    await sequelize.query(sql);
+
+    const [restuls] = await sequelize.query("select * from books");
+
+    res.json(restuls);
+  } catch (error) {
+    res.status(400).json({ status: 400, message: "somthing went wrong" });
   }
 });
 
