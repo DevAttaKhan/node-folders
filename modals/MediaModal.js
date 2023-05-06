@@ -2,19 +2,19 @@ const sequelize = require("../config/db.confg");
 
 class Medias {
   static async getAll() {
-    const sql = `select * from books`;
+    const sql = `select * from medias`;
     const [results] = await sequelize.query(sql);
     return results;
   }
 
   static async create(mediaName, folderId) {
-    const sql = `WITH inserted_book AS (
-      INSERT INTO books (book_name, folder_id)
+    const sql = `WITH inserted_media AS (
+      INSERT INTO medias (media_name, folder_id)
       VALUES ('${mediaName}', ${folderId})  RETURNING *
        )
-      SELECT * FROM inserted_book
+      SELECT * FROM inserted_media
       UNION
-      SELECT * FROM books;`;
+      SELECT * FROM medias;`;
 
     const [results] = await sequelize.query(sql, {
       type: sequelize.QueryTypes.INSERT,
@@ -25,13 +25,13 @@ class Medias {
 
   static async move(mediaId, folderId) {
     const sql = ` 
-           update books
+           update medias
            set folder_id = ${folderId}
-           where book_id = ${mediaId}
+           where media_id = ${mediaId}
            `;
     await sequelize.query(sql);
 
-    const [results] = await sequelize.query("select * from books");
+    const [results] = await sequelize.query("select * from medias");
     return results;
   }
 }

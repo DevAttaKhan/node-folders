@@ -13,6 +13,10 @@ app.use(cors(corsOptions));
 app.use(express.json());
 
 app.use("/folders", folderRoutes);
-app.use("/books", mediaRoutes);
+app.use("/medias", mediaRoutes);
+
+
+
+;
 
 module.exports = app;

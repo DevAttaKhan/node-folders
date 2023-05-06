@@ -24,10 +24,9 @@ class Folders {
 
 
 
-  static async getFolderTree() {
-    console.log(Folders.getFoldersTreeQuery)
-    const [results, metadata] = await sequelize.query(
-      this.getFoldersTreeQuery,
+  static async getFolderTree() { 
+    const [results ] = await sequelize.query(
+      Folders.getFoldersTreeQuery,
       {
         type: sequelize.QueryTypes.SELECT,
       }
@@ -43,12 +42,14 @@ class Folders {
                  `;
     await sequelize.query(sql);
     return await Folders.getFolderTree();
+
   }
 
   static async deleteFolderById(id) {
     const sql = ` delete from folders where folder_id  = ${id}`;
     await sequelize.query(sql);
-    return await Folders.getFolderTree();
+    const result = await Folders.getFolderTree();
+    return result;
   }
 }
 

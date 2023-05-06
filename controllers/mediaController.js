@@ -8,13 +8,13 @@ exports.getAllMedia = catchAsync(async (req, res) => {
 });
 
 exports.createMedia = catchAsync(async (req, res) => {
-  const { bookName, folderId } = req.body;
-  const result = await Medias.create(bookName, folderId);
+  const { mediaName, folderId } = req.body;
+  const result = await Medias.create(mediaName, folderId);
   res.json(result);
 });
 
 exports.moveMedia = catchAsync(async (req, res) => {
-  const { bookId, folderId } = req.body;
-   const result = await Medias.move(bookId, folderId);
+  const { mediaId, folderId } = req.body;
+   const result = await Medias.move(mediaId, folderId);
   res.json(result);
 });

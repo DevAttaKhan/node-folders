@@ -15,6 +15,6 @@ exports.createFolder = catchAsync(async (req, res) => {
 
 exports.deleteFolder = catchAsync(async (req, res) => {
   const { id } = req.params;
-  const result = await Folders.deleteFolderById(id);
+  const result = await Folders.deleteFolderById(id); 
   res.json(result);
 });
