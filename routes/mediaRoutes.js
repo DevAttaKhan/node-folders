@@ -1,10 +1,14 @@
 const express = require("express");
 const mediaController = require("../controllers/mediaController");
+const authController = require("../controllers/authController");
 
 const router = express.Router();
 
-router.route("/").get(mediaController.getAllMedia).post(mediaController.createMedia);
+router
+  .route("/")
+  .get(authController.protect, mediaController.getAllMedia)
+  .post(authController.protect,mediaController.createMedia);
 
-router.route("/move").post(mediaController.moveMedia);
+router.route("/move").post(authController.protect,mediaController.moveMedia);
 
 module.exports = router;

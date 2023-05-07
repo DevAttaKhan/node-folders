@@ -8,7 +8,8 @@ exports.up = (pgm) => {
     (
         folder_id SERIAL PRIMARY KEY, 
         folder_name VARCHAR(20),
-        parent_folder_id INTEGER REFERENCES folders(folder_id) ON DELETE CASCADE
+        parent_folder_id INTEGER REFERENCES folders(folder_id) ON DELETE CASCADE,
+        user_id INTEGER REFERENCES users(id) ON DELETE CASCADE
     )
     `);
 
@@ -21,9 +22,9 @@ DECLARE
 BEGIN
   SELECT COALESCE(jsonb_agg(jsonb_build_object(
     'folder_id', f.folder_id,
-	'parent_folder_id', f.parent_folder_id,  
+	  'parent_folder_id', f.parent_folder_id,  
     'folder_name', f.folder_name,
-    'childrens', get_folder_hierarchy(f.folder_id)
+    'childrens', get_folder_hierarchy(f.folder_id )
   ) ), null) INTO result
   FROM folders f
   WHERE f.parent_folder_id = parent_id;

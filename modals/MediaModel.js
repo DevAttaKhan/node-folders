@@ -1,20 +1,20 @@
 const sequelize = require("../config/db.confg");
 
 class Medias {
-  static async getAll() {
-    const sql = `select * from medias`;
+  static async getAll(userId) {
+    const sql = `select * from medias where user_id = ${userId}`;
     const [results] = await sequelize.query(sql);
     return results;
   }
 
-  static async create(mediaName, folderId) {
+  static async create(mediaName, folderId, userId) {
     const sql = `WITH inserted_media AS (
-      INSERT INTO medias (media_name, folder_id)
-      VALUES ('${mediaName}', ${folderId})  RETURNING *
+      INSERT INTO medias (media_name, folder_id, user_id)
+      VALUES ('${mediaName}', ${folderId}, ${userId})  RETURNING *
        )
       SELECT * FROM inserted_media
       UNION
-      SELECT * FROM medias;`;
+      SELECT * FROM medias where user_id = ${userId};`;
 
     const [results] = await sequelize.query(sql, {
       type: sequelize.QueryTypes.INSERT,
@@ -23,7 +23,7 @@ class Medias {
     return results;
   }
 
-  static async move(mediaId, folderId) {
+  static async move(mediaId, folderId, uerId) {
     const sql = ` 
            update medias
            set folder_id = ${folderId}
@@ -31,7 +31,7 @@ class Medias {
            `;
     await sequelize.query(sql);
 
-    const [results] = await sequelize.query("select * from medias");
+    const [results] = await sequelize.query(`select * from medias where user_id = ${uerId}`);
     return results;
   }
 }

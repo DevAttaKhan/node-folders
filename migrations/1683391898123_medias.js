@@ -7,13 +7,14 @@ exports.up = (pgm) => {
     create table medias (
         media_id serial primary key,
         media_name varchar(40),
-        folder_id  INTEGER REFERENCES folders(folder_id) on delete cascade
+        folder_id  INTEGER REFERENCES folders(folder_id) on delete cascade,
+        user_id INTEGER REFERENCES users(id) ON DELETE CASCADE
      )
     `);
 };
 
 exports.down = (pgm) => {
   pgm.sql(`
-      DROP TABLE media
+      DROP TABLE medias
     `);
 };
