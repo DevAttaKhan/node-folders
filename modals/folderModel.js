@@ -31,6 +31,7 @@ class Folders {
   }
 
   static async createFolder(folderName, parentFolderId, userId) {
+    
     const sql = `
               INSERT INTO folders (folder_name, parent_folder_id, user_id) 
               values ('${folderName}', ${parentFolderId}, ${userId})  
@@ -39,10 +40,10 @@ class Folders {
     return await Folders.getFolderTree(userId);
   }
 
-  static async deleteFolderById(id) {
+  static async deleteFolderById(id,userId) {
     const sql = ` delete from folders where folder_id  = ${id}`;
     await sequelize.query(sql);
-    const result = await Folders.getFolderTree(id);
+    const result = await Folders.getFolderTree(userId);
     return result;
   }
 }
