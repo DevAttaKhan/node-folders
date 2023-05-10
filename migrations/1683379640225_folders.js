@@ -6,15 +6,15 @@ exports.up = (pgm) => {
   pgm.sql(`
      CREATE TABLE folders
     (
-        folder_id SERIAL PRIMARY KEY, 
+        folder_id uuid PRIMARY KEY DEFAULT uuid_generate_v4(), 
         folder_name VARCHAR(20),
-        parent_folder_id INTEGER REFERENCES folders(folder_id) ON DELETE CASCADE,
-        user_id INTEGER REFERENCES users(id) ON DELETE CASCADE
+        parent_folder_id UUID REFERENCES folders(folder_id) ON DELETE CASCADE,
+        user_id UUID REFERENCES users(id) ON DELETE CASCADE
     )
     `);
 
   pgm.sql(`
-  CREATE OR REPLACE FUNCTION get_folder_hierarchy(parent_id INTEGER DEFAULT NULL)
+  CREATE OR REPLACE FUNCTION get_folder_hierarchy(parent_id UUID DEFAULT NULL)
   RETURNS JSONB
 AS $$
 DECLARE

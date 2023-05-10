@@ -42,6 +42,7 @@ exports.protect = catchAsync(async (req, res, next) => {
   // const decoded = await promisify(jwt.verify)(token, process.env.JWT_SECRET);
   const decoded = await jwt.verify(token, "secret");
   // 3) Check if user still exists
+
   const currentUser = await User.findById(decoded.id);
   if (!currentUser) {
     return next("The user belonging to this token does no longer exist.");

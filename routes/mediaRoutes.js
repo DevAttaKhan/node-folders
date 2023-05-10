@@ -7,8 +7,12 @@ const router = express.Router();
 router
   .route("/")
   .get(authController.protect, mediaController.getAllMedia)
-  .post(authController.protect,mediaController.createMedia);
+  .post(
+    authController.protect,
+    mediaController.upload.array('file', 200),
+    mediaController.createMedia
+  );
 
-router.route("/move").post(authController.protect,mediaController.moveMedia);
+router.route("/move").post(authController.protect, mediaController.moveMedia);
 
 module.exports = router;

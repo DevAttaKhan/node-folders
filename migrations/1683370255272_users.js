@@ -5,7 +5,7 @@ exports.shorthands = undefined;
 exports.up = (pgm) => {
   pgm.sql(`
       CREATE TABLE users(
-        id SERIAL PRIMARY KEY,
+        id uuid PRIMARY KEY DEFAULT uuid_generate_v4(),
         first_name VARCHAR(40),
         last_name  VARCHAR(40),
         username VARCHAR(40),

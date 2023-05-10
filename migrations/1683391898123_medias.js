@@ -5,10 +5,13 @@ exports.shorthands = undefined;
 exports.up = (pgm) => {
   pgm.sql(`
     create table medias (
-        media_id serial primary key,
+        media_id uuid PRIMARY KEY DEFAULT uuid_generate_v4(),
         media_name varchar(40),
-        folder_id  INTEGER REFERENCES folders(folder_id) on delete cascade,
-        user_id INTEGER REFERENCES users(id) ON DELETE CASCADE
+        media_type VARCHAR(30),
+        media_url  VARCHAR(200),
+        is_favorite BOOLEAN DEFAULT false,
+        folder_id  UUID REFERENCES folders(folder_id) on delete cascade,
+        user_id UUID REFERENCES users(id) ON DELETE CASCADE
      )
     `);
 };

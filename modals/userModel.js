@@ -5,7 +5,7 @@ class User {
     const sql = `
          INSERT INTO users (first_name, last_name, username, email, password)
          VALUES ('${firstName}','${lastName}','${username}','${email}','${password}')
-         RETURNING first_name,last_name,username, email;
+         RETURNING id, first_name,last_name,username, email;
         `;
 
     const [results] = await sequelize.query(sql);
@@ -24,7 +24,7 @@ class User {
 
   static async findById(id) {
     const sql = `
-       SELECT * FROM users WHERE id = ${id}
+       SELECT * FROM users WHERE id = '${id}'
     `;
 
     const [result] = await sequelize.query(sql);

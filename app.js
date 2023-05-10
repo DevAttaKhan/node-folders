@@ -11,6 +11,7 @@ const corsOptions = {
   methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
 };
 
+app.use(express.static('public'))
 app.use(cors(corsOptions));
 app.use(express.json());
 
