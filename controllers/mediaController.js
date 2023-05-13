@@ -6,11 +6,10 @@ const catchAsync = require("../utils/catchAsync");
 const Medias = require("../modals/MediaModel");
 const { v4: uuid } = require("uuid");
 const { log } = require("console");
+const compressAndStore = require("../utils/compressAndStore");
 
 const storage = multer.diskStorage({
-  destination: function (req, file, cb) { 
-
-    console.log('buffer>>>>',file.buffer)
+  destination: function (req, file, cb) {
     let dest;
     if (file.mimetype.includes("image")) {
       dest = path.join(__dirname, "../public/photos");
@@ -36,8 +35,11 @@ exports.getAllMedia = catchAsync(async (req, res) => {
 
 exports.createMedia = catchAsync(async (req, res) => {
   const { mediaName, folderId } = req.body;
-  console.log('....body>>>', req.files)
-  const { id } = req.user; 
+
+  const { id } = req.user;
+
+  await compressAndStore(req.files);
+
   const result = await Medias.create(mediaName, folderId, req.files, id);
   res.json(result);
 });
